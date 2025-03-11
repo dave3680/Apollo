@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://bao78jw6vb7l6"]
+
+[ext_resource type="Script" uid="uid://6y2yj6mrdu3s" path="res://Scenes/Props/torch.gd" id="1_31hks"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5usn8"]
+albedo_color = Color(0.545098, 0.352941, 0.168627, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_31hks"]
+
+[sub_resource type="Gradient" id="Gradient_tfwcx"]
+offsets = PackedFloat32Array(0, 0.0272727, 0.836364, 1)
+colors = PackedColorArray(0.929412, 0.403922, 0, 0, 1, 0.156863, 0.0313726, 1, 0.794058, 0.734531, 0, 1, 0.890196, 0.498039, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_sbu0p"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_tfwcx")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ys77h"]
+emission_shape_scale = Vector3(0.2, 0.5, 1)
+emission_shape = 3
+emission_box_extents = Vector3(3, 3, 3)
+gravity = Vector3(0, 1.5, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_over_velocity_max = 0.5
+color_ramp = SubResource("GradientTexture1D_sbu0p")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_31hks"]
+transparency = 1
+blend_mode = 4
+albedo_color = Color(0.933333, 0.54902, 0, 1)
+disable_receive_shadows = true
+shadow_to_opacity = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_tfwcx"]
+material = SubResource("StandardMaterial3D_31hks")
+size = Vector2(0.5, 1)
+
+[node name="Torch" type="Node3D"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1.5, 0, 0, 0, 0.5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_5usn8")
+mesh = SubResource("CylinderMesh_31hks")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="MeshInstance3D"]
+transform = Transform3D(10, 0, 0, 0, 3.33333, 0, 0, 0, 10, 0, 1.1794, 0)
+light_color = Color(1, 0.556863, 0, 1)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.193443, 0, 0, 0, 0.0596688, 0, 0, 0, 0.193443, 0, 1.72882, 0)
+cast_shadow = 0
+amount = 10
+speed_scale = 0.8
+process_material = SubResource("ParticleProcessMaterial_ys77h")
+draw_pass_1 = SubResource("QuadMesh_tfwcx")
+script = ExtResource("1_31hks")
+flicker_intensity = 0.3
+flicker_speed = 1.0

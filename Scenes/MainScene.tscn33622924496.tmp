@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3 uid="uid://wu3x1470tgl2"]
+
+[ext_resource type="BoxMesh" uid="uid://62d5iygpf7kd" path="res://Scenes/brick_mesh.tres" id="1_7rqgy"]
+[ext_resource type="MeshLibrary" uid="uid://c7ev2ka3w61yh" path="res://MeshBrick.tres" id="1_qxria"]
+[ext_resource type="Script" uid="uid://gwerv72s574d" path="res://Scenes/player.gd" id="3_qxria"]
+[ext_resource type="PackedScene" uid="uid://bao78jw6vb7l6" path="res://Scenes/Props/Torch.tscn" id="4_7rqgy"]
+[ext_resource type="Script" uid="uid://5l0b3u3o7jxj" path="res://Scenes/test.gd" id="5_qxria"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f140w"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4b75m"]
+radius = 0.3
+height = 0.655625
+
+[sub_resource type="Environment" id="Environment_nhkr4"]
+background_mode = 1
+background_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+ambient_light_energy = 0.32
+fog_enabled = true
+fog_mode = 1
+fog_light_energy = 0.66
+fog_density = 0.0514
+
+[node name="MainScene" type="Node3D"]
+
+[node name="GameCamera" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.45452, 0.541675, 0, 0.766045, 0.642788, -0.707107, -0.45452, 0.541675, 5, 10, 5)
+projection = 1
+size = 10.0
+
+[node name="Player" type="CharacterBody3D" parent="GameCamera" node_paths=PackedStringArray("camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.72388, 0.259319, -13.0604)
+script = ExtResource("3_qxria")
+camera = NodePath("..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GameCamera/Player"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 1.49012e-08, 0, 1.49012e-08, 0.4, 0, -1.1471, -0.962534)
+material_override = SubResource("StandardMaterial3D_f140w")
+mesh = ExtResource("1_7rqgy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GameCamera/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.38419e-07, -1.10624, -0.928245)
+shape = SubResource("CapsuleShape3D_4b75m")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_nhkr4")
+
+[node name="Torch" parent="." instance=ExtResource("4_7rqgy")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -1.97266, -6.10352e-05, -1.27335)
+
+[node name="GridMap" type="GridMap" parent="." node_paths=PackedStringArray("gridmap")]
+mesh_library = ExtResource("1_qxria")
+cell_size = Vector3(1, 1, 1)
+data = {
+"cells": PackedInt32Array(-65536, 65532, 1310720, -65536, 65533, 1310720, -1, 65534, 1310720, -2, 65534, 1310720, -1, 65533, 1310720, -1, 65532, 1310720, -2, 65533, 1310720, -2, 65532, 1310720, -3, 65532, 1310720, -4, 65532, 1310720, -5, 65532, 1310720, -5, 65533, 1310720, -5, 65534, 1310720, -5, 65535, 1310720, -6, 0, 1310720, -6, 1, 1310720, -5, 1, 1310720, -4, 1, 1310720, -4, 0, 1310720, -5, 0, 1310720, -4, 65535, 1310720, -6, 65535, 1310720, -6, 65534, 1310720, -6, 65533, 1310720, -6, 65532, 1310720, -4, 65533, 1310720, -3, 65533, 1310720, -3, 65534, 1310720, -4, 65534, 1310720, -3, 65535, 1310720, -2, 65535, 1310720, -1, 65535, 1310720, -65536, 65535, 1310720, -65536, 65534, 1310720, -65536, 0, 1310720, -65536, 1, 1310720, -65536, 2, 1310720, -1, 2, 1310720, -2, 2, 1310720, -2, 1, 1310720, -3, 1, 1310720, -2, 0, 1310720, -1, 0, 1310720, -1, 1, 1310720, -3, 2, 1310720, -3, 0, 1310720, -4, 2, 1310720, -5, 2, 1310720, -6, 2, 1310720, -7, 2, 1310720, -7, 1, 1310720, -7, 0, 1310720, -7, 65535, 1310720, -7, 65532, 1310720, -7, 65533, 1310720, -7, 65534, 1310720, 0, 0, 1310720, 0, 65535, 1310720, 65533, 65535, 1310720, 8, 10, 1310720)
+}
+script = ExtResource("5_qxria")
+gridmap = NodePath(".")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Torch2" parent="." instance=ExtResource("4_7rqgy")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -1.11926, 0.399713, 2.16014)
+
+[node name="Torch3" parent="." instance=ExtResource("4_7rqgy")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -4.91334, 0.511645, 2.91523)

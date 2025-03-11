@@ -1,0 +1,11 @@
+# Godot files to ignore
+.import/
+.export/
+*.translation
+*.mono/
+*.cache/
+*.log
+*.cfg
+*.gen.*
+*.remap
+*.godot/

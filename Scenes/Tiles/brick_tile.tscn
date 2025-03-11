@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://culv08kwjqeda"]
+
+[ext_resource type="Material" uid="uid://dmey76ljh6vfj" path="res://Assets/wall.tres" id="1_u0fts"]
+
+[sub_resource type="GDScript" id="GDScript_myywa"]
+script/source = "extends Node3D
+
+@onready var mesh_instance: MeshInstance3D = $MeshInstance3D  # Adjust path if needed
+
+func _ready():
+	if mesh_instance and mesh_instance.mesh:
+		generate_collision()
+
+func generate_collision():
+	var collision_body = StaticBody3D.new()
+	var collision_shape = CollisionShape3D.new()
+
+	# Create a simple box collision
+	var shape = BoxShape3D.new()
+	var mesh_size = mesh_instance.mesh.get_aabb().size  # Get size from mesh bounds
+	shape.size = mesh_size
+
+	collision_shape.shape = shape
+	collision_body.add_child(collision_shape)
+	
+	# Set ownership to prevent orphan nodes in the editor
+	collision_shape.owner = self
+	collision_body.owner = self
+
+	add_child(collision_body)
+"
+
+[sub_resource type="BoxMesh" id="BoxMesh_y4jh7"]
+material = ExtResource("1_u0fts")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_myywa"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="Scene1" type="Node3D"]
+script = SubResource("GDScript_myywa")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_y4jh7")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_myywa")
+debug_color = Color(2.16588e-06, 0.634446, 0.428939, 0.42)

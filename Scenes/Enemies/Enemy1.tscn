@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cw032lermg6pi"]
+
+[ext_resource type="Script" uid="uid://dalfd6j44kfmp" path="res://Scenes/Enemies/enemy_1.gd" id="1_g6sln"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g6sln"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s7od6"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_n3m8v"]
+
+[node name="Enemy1" type="CharacterBody3D"]
+script = ExtResource("1_g6sln")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_g6sln")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_s7od6")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="Hurtbox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_n3m8v")

@@ -1,0 +1,92 @@
+[gd_scene load_steps=17 format=3 uid="uid://bpc7q825u11od"]
+
+[ext_resource type="Script" uid="uid://gwerv72s574d" path="res://Scenes/Player/player.gd" id="1_6t5aa"]
+[ext_resource type="Material" uid="uid://dmey76ljh6vfj" path="res://Assets/wall.tres" id="2_vgqql"]
+[ext_resource type="Script" uid="uid://cym03musn3cvh" path="res://Scenes/Player/melee_attack.gd" id="3_fkybt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f140w"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y4jh7"]
+material = ExtResource("2_vgqql")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4b75m"]
+radius = 0.3
+height = 0.655625
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_f140w"]
+
+[sub_resource type="Gradient" id="Gradient_6t5aa"]
+colors = PackedColorArray(2.31028e-06, 0.526273, 0.526597, 1, 1, 1, 1, 0.701961)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vgqql"]
+gradient = SubResource("Gradient_6t5aa")
+
+[sub_resource type="Curve" id="Curve_fkybt"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.992647, 0.101124), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_x3wgy"]
+curve = SubResource("Curve_fkybt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3smsa"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_curve = SubResource("CurveTexture_x3wgy")
+color = Color(0, 0.678431, 0.737255, 1)
+color_ramp = SubResource("GradientTexture1D_vgqql")
+
+[sub_resource type="Gradient" id="Gradient_vgqql"]
+colors = PackedColorArray(0.825335, 0.403513, 1.92523e-07, 1, 0.827451, 0, 0.0196078, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fkybt"]
+gradient = SubResource("Gradient_vgqql")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3wgy"]
+albedo_texture = SubResource("GradientTexture2D_fkybt")
+
+[sub_resource type="BoxMesh" id="BoxMesh_8erm5"]
+material = SubResource("StandardMaterial3D_x3wgy")
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+script = ExtResource("1_6t5aa")
+debug_enabled = true
+max_health = 25
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 1.49012e-08, 0, 1.49012e-08, 0.4, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_f140w")
+mesh = SubResource("BoxMesh_y4jh7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_4b75m")
+
+[node name="MeleeAttack" type="Area3D" parent="."]
+script = ExtResource("3_fkybt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeAttack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+shape = SubResource("SphereShape3D_f140w")
+
+[node name="AttackParticles" type="GPUParticles3D" parent="MeleeAttack"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.28064, -1.01065)
+emitting = false
+amount = 10
+lifetime = 0.4
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_3smsa")
+draw_pass_1 = SubResource("BoxMesh_8erm5")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Muzzle" type="Marker3D" parent="."]
+
+[connection signal="body_entered" from="MeleeAttack" to="." method="_on_melee_attack_body_entered"]

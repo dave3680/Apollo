@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b87f21rem01yv"]
+
+[ext_resource type="PackedScene" uid="uid://dqjosa7jrfh3k" path="res://Scenes/Tiles/brick.tscn" id="1_2kj4r"]
+
+[node name="BrickMeshScene" type="Node3D"]
+
+[node name="Brick" parent="." instance=ExtResource("1_2kj4r")]
